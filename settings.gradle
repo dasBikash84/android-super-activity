@@ -1,0 +1,2 @@
+include ':android-super-activity'
+rootProject.name='Android Super Activity'
