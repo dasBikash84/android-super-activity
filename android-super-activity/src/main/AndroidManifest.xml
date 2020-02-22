@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dasbikash.super_activity"/>
+<manifest package="com.dasbikash.super_activity" />
