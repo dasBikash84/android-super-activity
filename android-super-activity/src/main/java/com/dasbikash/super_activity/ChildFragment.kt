@@ -1,10 +1,26 @@
 package com.dasbikash.super_activity
 
+import android.content.Context
 import android.os.Bundle
+import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
-
+import java.lang.IllegalStateException
 
 abstract class ChildFragment : Fragment() {
+
+    @CallSuper
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            activity as SingleFragmentActivity
+        }catch (ex:Throwable){
+            throw IllegalStateException()
+        }
+    }
+
+    protected fun addFragment(fragment: ChildFragment, clearFragmentStack:Boolean = false) {
+        (activity as SingleFragmentActivity).addFragment(fragment, clearFragmentStack)
+    }
 
     companion object {
 

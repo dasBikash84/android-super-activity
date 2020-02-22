@@ -5,7 +5,6 @@ import androidx.annotation.CallSuper
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import java.util.*
 
 abstract class SingleFragmentActivity : AppCompatActivity(){
@@ -18,7 +17,6 @@ abstract class SingleFragmentActivity : AppCompatActivity(){
         setContentView(getLayoutID())
         loadDefaultFragment()
     }
-
 
     private fun loadDefaultFragment(){
         supportFragmentManager.findFragmentById(getLoneFrameId()).apply {
@@ -41,8 +39,14 @@ abstract class SingleFragmentActivity : AppCompatActivity(){
         }else{
             supportFragmentManager.findFragmentById(getLoneFrameId())?.apply {
                 if (this is ChildFragment){
-                    ChildFragment.addTypeTag(this.arguments!!,this)
-                    childArgumentStack.push(this.arguments!!)
+                    val bundle:Bundle
+                    if (this.arguments !=null){
+                        bundle = this.arguments!!
+                    }else{
+                        bundle = Bundle()
+                    }
+                    ChildFragment.addTypeTag(bundle, this)
+                    childArgumentStack.push(bundle)
                 }
             }
         }
@@ -70,5 +74,4 @@ abstract class SingleFragmentActivity : AppCompatActivity(){
     @LayoutRes
     protected abstract fun getLayoutID(): Int
     abstract fun getDefaultFragment():ChildFragment
-
 }
