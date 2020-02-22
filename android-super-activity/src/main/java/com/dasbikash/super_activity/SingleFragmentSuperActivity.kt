@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
-abstract class SingleFragmentActivity : AppCompatActivity(){
+abstract class SingleFragmentSuperActivity : AppCompatActivity(){
 
     private val childArgumentStack = Stack<Bundle>()
 
@@ -52,7 +52,7 @@ abstract class SingleFragmentActivity : AppCompatActivity(){
             }
         GlobalScope.launch {
             if (fragmentTransactionOnGoing.get()){
-                SnackBarUtils.showShortSnack(this@SingleFragmentActivity,waitMessage)
+                SnackBarUtils.showShortSnack(this@SingleFragmentSuperActivity,waitMessage)
                 return@launch
             }
             fragmentTransactionOnGoing.getAndSet(true)
