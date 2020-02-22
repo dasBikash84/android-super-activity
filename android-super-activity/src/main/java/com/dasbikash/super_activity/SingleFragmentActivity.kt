@@ -73,5 +73,5 @@ abstract class SingleFragmentActivity : AppCompatActivity(){
     protected abstract fun getLoneFrameId():Int
     @LayoutRes
     protected abstract fun getLayoutID(): Int
-    abstract fun getDefaultFragment():ChildFragment
+    protected abstract fun getDefaultFragment():ChildFragment
 }
