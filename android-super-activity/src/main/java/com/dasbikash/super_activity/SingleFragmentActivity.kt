@@ -55,9 +55,11 @@ abstract class SingleFragmentActivity : AppCompatActivity(){
                 return@launch
             }
             fragmentTransactionOnGoing.getAndSet(true)
-            runOnUiThread {
-                fragmentTransaction.commit()
-            }
+            runOnMainThread({
+                runIfActive {
+                    fragmentTransaction.commit()
+                }
+            })
         }
     }
 
