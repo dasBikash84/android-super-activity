@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 abstract class SingleFragmentSuperActivity : AppCompatActivity(){
 
-    private val childArgumentStack = Stack<Bundle>()
+    private val childFragmentArgumentStack = Stack<Bundle>()
 
     private val fragmentTransactionOnGoing = AtomicBoolean(false)
 
@@ -37,10 +37,12 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
     }
 
     /**
-     * Trigger a navigation to the specified fragment, optionally adding a transaction to the back
+     * Trigger a navigation to the specified fragment,
+     * optionally adding a transaction to the back
      * stack to make this navigation reversible.
      */
-    private fun navigateTo(fragment: Fragment) {
+    private fun navigateTo(fragment: Fragment,
+                           doOnFragmentLoad:(()->Any?)?=null) {
         val fragmentTransaction =
             supportFragmentManager
             .beginTransaction()
@@ -49,10 +51,13 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
                 GlobalScope.launch {
                     fragmentTransactionOnGoing.getAndSet(false)
                 }
+                runOnMainThread({doOnFragmentLoad?.invoke()})
             }
         GlobalScope.launch {
             if (fragmentTransactionOnGoing.get()){
-                SnackBarUtils.showShortSnack(this@SingleFragmentSuperActivity,waitMessage)
+                if (waitMessage.isNotBlank()) {
+                    SnackBarUtils.showShortSnack(this@SingleFragmentSuperActivity, waitMessage)
+                }
                 return@launch
             }
             fragmentTransactionOnGoing.getAndSet(true)
@@ -64,9 +69,11 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
         }
     }
 
-    fun addFragment(fragment: Fragment,clearFragmentStack:Boolean = false) {
+    fun addFragment(fragment: Fragment,
+                    clearFragmentStack:Boolean = false,
+                    doOnFragmentLoad:(()->Any?)?=null) {
         if (clearFragmentStack){
-            clearFragmentStack()
+            clearFragmentBackStack()
         }else{
             supportFragmentManager.findFragmentById(getLoneFrameId())?.apply {
                 val bundle:Bundle
@@ -76,40 +83,45 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
                     bundle = Bundle()
                 }
                 addTypeTag(bundle, this)
-                childArgumentStack.push(bundle)
+                childFragmentArgumentStack.push(bundle)
             }
         }
-        navigateTo(fragment)
-    }
-
-    private fun clearFragmentStack() {
-        while (!childArgumentStack.empty()) {
-            childArgumentStack.pop()
-        }
+        navigateTo(fragment,doOnFragmentLoad)
     }
 
     @CallSuper
     override fun onBackPressed() {
-        if (childArgumentStack.isNotEmpty()){
+        if (childFragmentArgumentStack.isNotEmpty()){
             do {
-                val arguments = childArgumentStack.pop()
-                getInstance<Fragment>(arguments)?.let {
-                    navigateTo(it)
+                if (loadFragmentFromBackStack()){
                     return
                 }
-            }while (childArgumentStack.isNotEmpty())
+            }while (childFragmentArgumentStack.isNotEmpty())
             super.onBackPressed()
         }else {
             super.onBackPressed()
         }
     }
 
+    protected fun loadFragmentFromBackStack():Boolean{
+        val arguments = childFragmentArgumentStack.pop()
+        getInstance<Fragment>(arguments)?.let {
+            navigateTo(it)
+            return true
+        }
+        return false
+    }
+
+    protected fun clearFragmentBackStack() {
+        while (!childFragmentArgumentStack.empty()) {
+            childFragmentArgumentStack.pop()
+        }
+    }
+
     private var waitMessage = "Please wait..."
 
     protected fun setWaitMessage(waitMessage:String){
-        if (waitMessage.isNotBlank()) {
-            this.waitMessage = waitMessage.trim()
-        }
+        this.waitMessage = waitMessage.trim()
     }
 
     @IdRes
