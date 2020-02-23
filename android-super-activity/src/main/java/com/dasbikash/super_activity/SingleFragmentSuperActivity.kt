@@ -40,6 +40,7 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
         setContentView(getLayoutID())
     }
 
+    @CallSuper
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         loadDefaultFragment()
