@@ -15,6 +15,19 @@ import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
+/**
+ * Abstract super activity to hold and manage stack of all child fragments
+ * for a single activity application. If child activity will
+ *
+ * Usage requirements/procedure:
+ *
+ * Single activity of user application will have to extend this class.
+ * Child activity will have to pass it's layout id on 'getLayoutID()' protected method.
+ * Child activity will have to pass the id of fragment housing frame id on 'getLoneFrameId()' protected method.
+ *
+ *
+ * Implementation example: https://github.com/dasBikash84/super_activity_example
+ * */
 abstract class SingleFragmentSuperActivity : AppCompatActivity(){
 
     private val childFragmentArgumentStack = Stack<Bundle>()
@@ -25,6 +38,10 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutID())
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
         loadDefaultFragment()
     }
 
