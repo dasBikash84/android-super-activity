@@ -59,6 +59,8 @@ dependencies {
         })
 ```
 
+Example project [*here*](https://github.com/dasBikash84/super_activity_example).
+
 License
 --------
 

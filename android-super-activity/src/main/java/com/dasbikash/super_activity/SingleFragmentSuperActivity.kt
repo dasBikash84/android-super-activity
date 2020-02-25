@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * * Stacked one after another.
  * * Clearing back stack.
  * ```
- * If back stack is note cleared then 'SingleFragmentSuperActivity' will stack arguments of loaded fragments.
+ * If back stack is not cleared then 'SingleFragmentSuperActivity' will stack arguments (not fragment) of loaded fragments.
  * On back press it will pop fragment arguments in descending order; then will create and load fragment until stack is empty.
  *
  * ```
