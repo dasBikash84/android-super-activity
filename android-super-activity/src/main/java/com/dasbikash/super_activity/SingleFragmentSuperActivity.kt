@@ -68,11 +68,6 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
         }
     }
 
-    /**
-     * Trigger a navigation to the specified fragment,
-     * optionally adding a transaction to the back
-     * stack to make this navigation reversible.
-     */
     private fun navigateTo(fragment: Fragment,
                            doOnFragmentLoad:(()->Any?)?=null) {
         val fragmentTransaction =
