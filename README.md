@@ -24,6 +24,40 @@ dependencies {
 ```
 
 ## Features
+- Offers an elegant interface to manage Fragment stack for a single activity application.
+- By default new fragments will be loaded on stack. Optionally it could be loaded clearing back stack also.
+
+## Usage example
+
+##### Implementing child activity (for single activity application)
+```
+    class MainActivity : SingleFragmentSuperActivity() {
+    
+        override fun getLoneFrameId(): Int = R.id.lone_frame
+    
+        override fun getLayoutID(): Int  = R.layout.activity_main
+    
+        override fun getDefaultFragment(): Fragment = FragmentOne()
+    }
+```
+##### Loading child fragment on back stack
+```
+    //from inside of fragment
+    (activity as SingleFragmentSuperActivity).addFragment(fragment) 
+```
+##### Loading child fragment on clearing back stack
+```
+    //from inside of fragment
+    (activity as SingleFragmentSuperActivity).addFragment(fragment,true)
+```
+##### Loading child fragment on back stack with post completion task
+```
+    //from inside of fragment
+    (activity as SingleFragmentSuperActivity)
+        .addFragment(fragment,doOnFragmentLoad = {
+            //Task on fragment load completion
+        })
+```
 
 License
 --------

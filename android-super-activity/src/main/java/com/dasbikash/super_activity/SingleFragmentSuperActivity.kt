@@ -16,15 +16,31 @@ import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
- * Abstract super activity to hold and manage stack of all child fragments
- * for a single activity application. If child activity will
- *```
- * ### Usage requirements/procedure:
- * Single activity of user application will have to extend this class.
- * Child activity will have to pass it's layout id on 'getLayoutID()' protected method.
- * Child activity will have to pass the id of fragment housing frame id on 'getLoneFrameId()' protected method.
  * ```
- * [`Implementation example`](https://github.com/dasBikash84/super_activity_example)
+ *
+ * Abstract super activity to manage stack of all child fragments for a single activity application.
+ * ```
+ * Descendant activity will have to register a [FrameLayout](https://developer.android.com/reference/android/widget/FrameLayout)
+ * which 'SingleFragmentSuperActivity' will use to host child fragments.
+ * ```
+ * ```
+ * ##### Fragments could be loaded in any one of two ways:
+ * * Stacked one after another.
+ * * Clearing back stack.
+ * ```
+ * If back stack is note cleared then 'SingleFragmentSuperActivity' will stack arguments of loaded fragments.
+ * On back press it will pop fragment arguments in descending order; then will create and load fragment until stack is empty.
+ *
+ * ```
+ *
+ * ### Usage requirements/procedure:
+ * * Single activity of user application will have to extend this class.
+ * * Child activity will have to register default fragment via 'getDefaultFragment()' protected method.
+ * * Child activity will have to pass it's layout id on 'getLayoutID()' protected method.
+ * * Child activity will have to pass the frame id on 'getLoneFrameId()' protected method on which 'SingleFragmentSuperActivity' will load fragments.
+ * ```
+ *
+ * @author Bikash Das(das.bikash.dev@gmail.com)
  * */
 abstract class SingleFragmentSuperActivity : AppCompatActivity(){
 
@@ -85,6 +101,13 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
         }
     }
 
+    /**
+     * Method to load fragment on registered frame.
+     *
+     * @param fragment Fragment to be loaded.
+     * @param clearFragmentStack whether fragment back stack should be cleared
+     * @param doOnFragmentLoad Optional functional parameter that will run after fragment loading
+     * */
     fun addFragment(fragment: Fragment,
                     clearFragmentStack:Boolean = false,
                     doOnFragmentLoad:(()->Any?)?=null) {
@@ -119,6 +142,11 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
         }
     }
 
+    /**
+     * Method to manually load fragment from back-stack(if available).
+     *
+     * @return 'true' if fragment found and loaded from back-stack
+     * */
     protected fun loadFragmentFromBackStack():Boolean{
         val arguments = childFragmentArgumentStack.pop()
         getInstance<Fragment>(arguments)?.let {
@@ -128,6 +156,11 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
         return false
     }
 
+    /**
+     * Method to manually clear fragment back-stack.
+     *
+     * @return 'true' if fragment found and loaded from back-stack
+     * */
     protected fun clearFragmentBackStack() {
         while (!childFragmentArgumentStack.empty()) {
             childFragmentArgumentStack.pop()
@@ -136,14 +169,24 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
 
     private var waitMessage = "Please wait..."
 
+    /**
+     * Method to set fragment loader busy message.
+     *
+     * @return 'true' if fragment found and loaded from back-stack
+     * */
     protected fun setWaitMessage(waitMessage:String){
         this.waitMessage = waitMessage.trim()
     }
 
+    //Frame id that will host fragment
     @IdRes
     protected abstract fun getLoneFrameId():Int
+
+    //Child activity layout Id
     @LayoutRes
     protected abstract fun getLayoutID(): Int
+
+    //Default fragment
     protected abstract fun getDefaultFragment():Fragment
 
     companion object{
