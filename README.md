@@ -1,6 +1,6 @@
 # android-super-activity
 
-<h3>Library offering abstract parent activity for Single activity app.</h3>
+### Library offering [`abstract parent activity`](https://github.com/dasBikash84/android-super-activity/blob/master/android-super-activity/src/main/java/com/dasbikash/super_activity/SingleFragmentSuperActivity.kt) for Single activity application.
 
 [![](https://jitpack.io/v/dasBikash84/android-super-activity.svg)](https://jitpack.io/#dasBikash84/android-super-activity)
 
@@ -24,7 +24,7 @@ dependencies {
 ```
 
 ## Features
-- Offers an elegant interface to manage Fragment stack for a single activity application.
+- Offers an elegant interface to manage Fragment back stack for a single activity application.
 - By default new fragments will be loaded on stack. Optionally it could be loaded clearing back stack also.
 
 ## Usage example
@@ -45,7 +45,7 @@ dependencies {
     //from inside of fragment
     (activity as SingleFragmentSuperActivity).addFragment(fragment) 
 ```
-##### Loading child fragment on clearing back stack
+##### Loading child fragment clearing back stack
 ```
     //from inside of fragment
     (activity as SingleFragmentSuperActivity).addFragment(fragment,true)
