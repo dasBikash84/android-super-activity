@@ -3,13 +3,13 @@ package com.dasbikash.super_activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import com.dasbikash.android_snackbar_utils.SnackBarUtils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -83,7 +83,7 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
         GlobalScope.launch {
             if (fragmentTransactionOnGoing.get()){
                 if (waitMessage.isNotBlank()) {
-                    SnackBarUtils.showShortSnack(this@SingleFragmentSuperActivity, waitMessage)
+                    Toast.makeText(this@SingleFragmentSuperActivity, waitMessage,Toast.LENGTH_SHORT).show()
                 }
                 return@launch
             }
