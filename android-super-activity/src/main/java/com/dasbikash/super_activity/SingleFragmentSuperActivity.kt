@@ -175,8 +175,8 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
         }
     }
 
-    protected fun <T:Fragment> getCurrentFragmentType():Class<T> =
-        supportFragmentManager.findFragmentById(getLoneFrameId())!!.javaClass as Class<T>
+    protected fun getCurrentFragmentType():Class<Fragment>? =
+        supportFragmentManager.findFragmentById(getLoneFrameId())?.javaClass
 
     private var waitMessage = "Please wait..."
 
