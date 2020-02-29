@@ -40,17 +40,17 @@ dependencies {
         override fun getDefaultFragment(): Fragment = FragmentOne()
     }
 ```
-##### Loading child fragment on back stack
+##### Loading child fragment on top of `Fragment Stack`
 ```
     //from inside of fragment
     (activity as SingleFragmentSuperActivity).addFragment(fragment) 
 ```
-##### Loading child fragment clearing back stack
+##### Loading child fragment clearing `Fragment Stack`
 ```
     //from inside of fragment
-    (activity as SingleFragmentSuperActivity).addFragment(fragment,true)
+    (activity as SingleFragmentSuperActivity).addFragmentClearingBackStack(fragment)
 ```
-##### Loading child fragment on back stack with post completion task
+##### Loading child fragment on top of `Fragment Stack` with post completion task
 ```
     //from inside of fragment
     (activity as SingleFragmentSuperActivity)

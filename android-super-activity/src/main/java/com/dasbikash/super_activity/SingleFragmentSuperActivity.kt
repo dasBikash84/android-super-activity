@@ -95,17 +95,30 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
             })
         }
     }
-
     /**
-     * Method to load fragment on registered frame.
+     * Method to Add fragment on top of fragment stack.
      *
      * @param fragment Fragment to be loaded.
-     * @param clearFragmentStack whether fragment back stack should be cleared
      * @param doOnFragmentLoad Optional functional parameter that will run after fragment loading
      * */
     fun addFragment(fragment: Fragment,
-                    clearFragmentStack:Boolean = false,
-                    doOnFragmentLoad:(()->Any?)?=null) {
+                    doOnFragmentLoad:(()->Any?)?=null) =
+        loadFragment(fragment,false,doOnFragmentLoad)
+
+    /**
+     * Method to Add fragment clearing fragment back stack.
+     *
+     * @param fragment Fragment to be loaded.
+     * @param doOnFragmentLoad Optional functional parameter that will run after fragment loading
+     * */
+    fun addFragmentClearingBackStack(
+                    fragment: Fragment,
+                    doOnFragmentLoad:(()->Any?)?=null) =
+        loadFragment(fragment,true,doOnFragmentLoad)
+
+    private fun loadFragment(fragment: Fragment,
+                     clearFragmentStack:Boolean = false,
+                     doOnFragmentLoad:(()->Any?)?=null) {
         if (clearFragmentStack){
             clearFragmentBackStack()
         }else{
@@ -161,6 +174,9 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
             childFragmentArgumentStack.pop()
         }
     }
+
+    protected fun <T:Fragment> getCurrentFragmentType():Class<T> =
+        supportFragmentManager.findFragmentById(getLoneFrameId())!!.javaClass as Class<T>
 
     private var waitMessage = "Please wait..."
 
