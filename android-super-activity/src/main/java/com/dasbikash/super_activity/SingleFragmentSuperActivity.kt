@@ -69,7 +69,7 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
     }
 
     private fun navigateTo(fragment: Fragment,
-                           doOnFragmentLoad:(()->Any?)?=null) {
+                           doOnFragmentLoad:(()->Unit)?=null) {
         val fragmentTransaction =
             supportFragmentManager
             .beginTransaction()
@@ -102,7 +102,7 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
      * @param doOnFragmentLoad Optional functional parameter that will run after fragment loading
      * */
     fun addFragment(fragment: Fragment,
-                    doOnFragmentLoad:(()->Any?)?=null) =
+                    doOnFragmentLoad:(()->Unit)?=null) =
         loadFragment(fragment,false,doOnFragmentLoad)
 
     /**
@@ -113,12 +113,12 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
      * */
     fun addFragmentClearingBackStack(
                     fragment: Fragment,
-                    doOnFragmentLoad:(()->Any?)?=null) =
+                    doOnFragmentLoad:(()->Unit)?=null) =
         loadFragment(fragment,true,doOnFragmentLoad)
 
     private fun loadFragment(fragment: Fragment,
                      clearFragmentStack:Boolean = false,
-                     doOnFragmentLoad:(()->Any?)?=null) {
+                     doOnFragmentLoad:(()->Unit)?=null) {
         if (clearFragmentStack){
             clearFragmentBackStack()
         }else{
@@ -223,12 +223,12 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
     }
 }
 
-internal fun AppCompatActivity.runIfActive(task:()->Any?){
+internal fun <T> AppCompatActivity.runIfActive(task:()->T?){
     if (lifecycle.currentState == Lifecycle.State.RESUMED) {
         task()
     }
 }
 
-internal fun runOnMainThread(task: () -> Any?,delayMs:Long=0L){
+internal fun <T> runOnMainThread(task: () -> T?,delayMs:Long=0L){
     Handler(Looper.getMainLooper()).postDelayed( { task() },delayMs)
 }
