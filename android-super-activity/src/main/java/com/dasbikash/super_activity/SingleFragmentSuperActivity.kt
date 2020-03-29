@@ -101,7 +101,8 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
      * @param fragment Fragment to be loaded.
      * @param doOnFragmentLoad Optional functional parameter that will run after fragment loading
      * */
-    fun addFragment(fragment: Fragment,
+    @CallSuper
+    open fun addFragment(fragment: Fragment,
                     doOnFragmentLoad:(()->Unit)?=null) =
         loadFragment(fragment,false,doOnFragmentLoad)
 
@@ -111,7 +112,8 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
      * @param fragment Fragment to be loaded.
      * @param doOnFragmentLoad Optional functional parameter that will run after fragment loading
      * */
-    fun addFragmentClearingBackStack(
+    @CallSuper
+    open fun addFragmentClearingBackStack(
                     fragment: Fragment,
                     doOnFragmentLoad:(()->Unit)?=null) =
         loadFragment(fragment,true,doOnFragmentLoad)
