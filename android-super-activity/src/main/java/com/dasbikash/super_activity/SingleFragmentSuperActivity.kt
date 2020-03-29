@@ -158,12 +158,22 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
      * @return 'true' if fragment found and loaded from back-stack
      * */
     protected fun loadFragmentFromBackStack():Boolean{
-        val arguments = childFragmentArgumentStack.pop()
-        getInstance<Fragment>(arguments)?.let {
+        getFragmentFromBackStack()?.let {
             navigateTo(it)
             return true
         }
         return false
+    }
+
+    @CallSuper
+    protected open fun getFragmentFromBackStack():Fragment?{
+        try {
+            val arguments = childFragmentArgumentStack.pop()
+            return getInstance<Fragment>(arguments)
+        }catch (ex:Throwable){
+            ex.printStackTrace()
+            return null
+        }
     }
 
     /**
