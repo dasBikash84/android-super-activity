@@ -176,6 +176,16 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
         }
     }
 
+    protected fun getCurrentFragment():Fragment?{
+        try {
+            val arguments = childFragmentArgumentStack.peek()
+            return getInstance<Fragment>(arguments)
+        }catch (ex:Throwable){
+            ex.printStackTrace()
+            return null
+        }
+    }
+
     /**
      * Method to manually clear fragment back-stack.
      *
