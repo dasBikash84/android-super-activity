@@ -83,7 +83,7 @@ abstract class SingleFragmentSuperActivity : AppCompatActivity(){
         GlobalScope.launch {
             if (fragmentTransactionOnGoing.get()){
                 if (waitMessage.isNotBlank()) {
-                    Toast.makeText(this@SingleFragmentSuperActivity, waitMessage,Toast.LENGTH_SHORT).show()
+                    runOnMainThread({Toast.makeText(this@SingleFragmentSuperActivity, waitMessage,Toast.LENGTH_SHORT).show()})
                 }
                 return@launch
             }
