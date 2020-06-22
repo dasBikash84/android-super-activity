@@ -29,6 +29,8 @@ dependencies {
 
 ## Usage example
 
+[`Example project`](https://github.com/dasBikash84/android-lib-test/tree/master/super_activity_example)
+
 ##### Implementing child activity (for single activity application)
 ```
     class MainActivity : SingleFragmentSuperActivity() {
@@ -58,8 +60,6 @@ dependencies {
             //Task on fragment load completion
         })
 ```
-
-Example project [*here*](https://github.com/dasBikash84/super_activity_example).
 
 License
 --------
