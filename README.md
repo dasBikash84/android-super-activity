@@ -30,6 +30,8 @@ dependencies {
 ## Usage example
 
 [`Example project`](https://github.com/dasBikash84/android-lib-test/tree/master/super_activity_example)
+ | 
+[`Example app`](https://play.google.com/store/apps/details?id=com.dasbikash.book_keeper)
 
 ##### Implementing child activity (for single activity application)
 ```
